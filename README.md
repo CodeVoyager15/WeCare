@@ -28,7 +28,8 @@ create `.env`
 
 **46:part-4 [Reusable+rtk+axios+]**
 - 1. [Make Resualbe Form](https://react-hook-form.com/docs/formprovider)
-- 2. [Make Resualbe Input](https://react-hook-form.com/docs/usecontroller/controller) 
+- 2. [Make Resualbe Input and Make Login User Componet](https://react-hook-form.com/docs/usecontroller/controller) 
+- 3. Make Registration
 
 -
 **45:part-1 [Login+ Logout + Register Functionable using server action]**

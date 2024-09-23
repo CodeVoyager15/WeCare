@@ -1,30 +1,40 @@
-import { TextField } from "@mui/material";
+import { SxProps, TextField } from "@mui/material";
 import { Controller, useFormContext } from "react-hook-form";
 
+type TInputProps = {
+  name: string;
+  label: string;
+  type: string;
+  size?: "small";
+  fullWidth?: boolean;
+  placeholder?: string;
+  toolTipText?: string | undefined;
+  disabled?: boolean;
+  required?: boolean;
+  sx?: SxProps;
+  // size?:"small" |"medium";
+};
 
-type TInputProps={
-    name: string;
-    label:string;
-    type: string;
-    size?:"small";
-    fullWidth?:boolean;
-    placeholder?:string;
-    toolTipText?:string |undefined;
-    disabled?: boolean;
-    required?: boolean;
-    // size?:"small" |"medium";
-}
-
-
-const CustomInput = ({ name, label, type, size, fullWidth,placeholder,toolTipText='' }:TInputProps) => {
+const CustomInput = ({
+  name,
+  label,
+  type,
+  size,
+  fullWidth,
+  placeholder,
+  required,
+  toolTipText = "",
+  sx,
+}: TInputProps) => {
   const { control } = useFormContext();
   return (
     <Controller
       control={control}
       name={name}
-      render={({ field}) => (
+      render={({ field }) => (
         <TextField
-        {...field}
+          {...field}
+          sx={{...sx}}
           label={label}
           type={type}
           variant="outlined"
@@ -32,8 +42,8 @@ const CustomInput = ({ name, label, type, size, fullWidth,placeholder,toolTipTex
           fullWidth={fullWidth}
           placeholder={placeholder}
           id={name}
+          required={required}
         />
-
       )}
     />
   );

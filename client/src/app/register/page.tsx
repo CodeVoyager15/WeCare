@@ -1,5 +1,7 @@
 "use client";
 import assets from "@/assets";
+import CustomForm from "@/components/Forms/CustomForm";
+import CustomInput from "@/components/Forms/CustomInput";
 import { registerPatient } from "@/services/actions/registerPatient";
 import { userLogin } from "@/services/actions/userLogin";
 import { storeUserInfo } from "@/services/auth.services";
@@ -10,14 +12,13 @@ import {
   Container,
   Grid,
   Stack,
-  TextField,
   Typography,
 } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
 import { toast } from "sonner";
 
 // {
@@ -30,46 +31,28 @@ import { toast } from "sonner";
 //   }
 // }
 
-interface IPatientData {
-  name: string;
-  email: string;
-  contactNumber: string;
-  address: string;
-}
 
-interface IPatientRegisterFormData {
-  password: string;
-  patient: IPatientData;
-}
 
 const RegisterPage = () => {
   const router = useRouter();
 
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<IPatientRegisterFormData>();
 
 
-  const onSubmit: SubmitHandler<IPatientRegisterFormData> = async(values) => {
+  const onSubmit = async (values: FieldValues) => {
     const data = modifyPayload(values);
     console.log(data);
     try {
       const res = await registerPatient(data);
       console.log(res);
 
-
       if (res?.data?.id) {
-        toast.success(res?.message,{richColors:true});
+        toast.success(res?.message, { richColors: true });
 
         const result = await userLogin({
           password: values.password,
           email: values.patient.email,
-
         });
-        
+
         if (result?.data?.accessToken) {
           storeUserInfo({ accessToken: result?.data?.accessToken });
           router.push("/");
@@ -115,56 +98,58 @@ const RegisterPage = () => {
           </Stack>
 
           <Box>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <CustomForm onSubmit={onSubmit}>
               <Grid container spacing={2} my={1}>
                 <Grid item md={12}>
-                  <TextField
+                  <CustomInput
+                    name="patient.name"
                     label="Name"
-                    variant="outlined"
                     size="small"
+                    type="name"
                     fullWidth={true}
-                    {...register("patient.name")}
-
+                    required={true}
                   />
                 </Grid>
                 <Grid item md={6}>
-                  <TextField
+                  <CustomInput
                     label="Email"
                     type="email"
-                    variant="outlined"
                     size="small"
                     fullWidth={true}
-                    {...register("patient.email")}
+                    name="patient.email"
+                    placeholder="unique"
+                    required={true}
                   />
                 </Grid>
                 <Grid item md={6}>
-                  <TextField
+                  <CustomInput
                     label="Password"
                     type="password"
-                    variant="outlined"
                     size="small"
                     fullWidth={true}
-                    {...register("password")}
+                   name="password"
+                    placeholder="123456"
                   />
                 </Grid>
                 <Grid item md={6}>
-                  <TextField
+                  <CustomInput
                     label="Contact Number"
                     type="tel"
-                    variant="outlined"
                     size="small"
                     fullWidth={true}
-                    {...register("patient.contactNumber")}
+                    name="patient.contactNumber"
+                    placeholder="01111111111"
                   />
                 </Grid>
                 <Grid item md={6}>
-                  <TextField
+                  <CustomInput
                     label="Address"
                     type="text"
-                    variant="outlined"
+
                     size="small"
                     fullWidth={true}
-                    {...register("patient.address")}
+                    name="patient.address"
+                    placeholder="Thakurgaon,Dhaka"
                   />
                 </Grid>
               </Grid>
@@ -178,9 +163,12 @@ const RegisterPage = () => {
                 Register
               </Button>
               <Typography component="p" fontWeight={300}>
-                Do you already have an account? <Link className="text-green-700 font-extrabold" href="/login">Login</Link>
+                Do you already have an account?{" "}
+                <Link className="text-green-700 font-extrabold" href="/login">
+                  Login
+                </Link>
               </Typography>
-            </form>
+            </CustomForm>
           </Box>
         </Box>
       </Stack>
