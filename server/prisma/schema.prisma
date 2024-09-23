@@ -1,0 +1,303 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                 String     @id @default(uuid())
+  email              String     @unique
+  password           String
+  role               UserRole
+  needPasswordChange Boolean    @default(true)
+  status             UserStatus @default(ACTIVE)
+  createdAt          DateTime   @default(now())
+  updatedAt          DateTime   @updatedAt
+  doctor             Doctor?
+  patient            Patient?
+  admin              Admin?
+
+  @@map("users")
+}
+
+model Doctor {
+  id                  String              @id @default(uuid())
+  email               String              @unique
+  name                String
+  profilePhoto        String?
+  contactNumber       String
+  address             String?
+  registrationNumber  String
+  experience          Int                 @default(0)
+  gender              Gender
+  apointmentFee       Int
+  qualification       String
+  currentWorkingPlace String
+  designation         String
+  doctorSpecialties   DoctorSpecialties[]
+  isDeleted           Boolean             @default(false)
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+  user                User                @relation(references: [email], fields: [email])
+  averageRating       Float               @default(0.0)
+  appointments        Appointment[]
+  schedules           DoctorSchedule[]
+  prescription        Prescription[]
+  review              Review[]
+
+  @@map("doctors")
+}
+
+model Specialties {
+  id      String              @id @default(uuid())
+  title   String
+  icon    String?
+  doctors DoctorSpecialties[]
+
+  @@map("specialties")
+}
+
+model DoctorSpecialties {
+  specialtiesId String
+  specialties   Specialties @relation(fields: [specialtiesId], references: [id])
+
+  doctorId String
+  doctor   Doctor @relation(fields: [doctorId], references: [id])
+
+  @@id([specialtiesId, doctorId])
+  @@map("doctor_specialties")
+}
+
+model Patient {
+  id               String            @id @unique @default(uuid())
+  email            String            @unique
+  name             String
+  profilePhoto     String?
+  contactNumber    String?
+  address          String?
+  isDeleted        Boolean           @default(false)
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  medicalReport    MedicalReport[]
+  patientHelthData PatientHelthData?
+  user             User              @relation(references: [email], fields: [email])
+  appointments     Appointment[]
+  prescription     Prescription[]
+  review           Review[]
+
+  @@map("patients")
+}
+
+model PatientHelthData {
+  id                  String        @id @default(uuid())
+  patientId           String        @unique
+  patient             Patient       @relation(fields: [patientId], references: [id])
+  dateOfBirth         DateTime?
+  gender              Gender
+  bloodGroup          BloodGroup
+  hasAllergies        Boolean?      @default(false)
+  hasDiabetes         Boolean?      @default(false)
+  height              String?
+  weight              String?
+  smokingStatus       Boolean?      @default(false)
+  dietaryPreferences  String?
+  pregnancyStatus     Boolean?      @default(false)
+  mentalHealthHistory String?
+  immunizationStatus  Boolean?      @default(false)
+  hasPastSurgeries    Boolean?      @default(false)
+  recentAnxiety       Boolean?      @default(false)
+  recentDepression    Boolean?      @default(false)
+  maritalStatus       MaritalStatus
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+
+  @@map("patientHelthDatas")
+}
+
+model MedicalReport {
+  id        String  @id @default(uuid())
+  patientId String
+  patient   Patient @relation(fields: [patientId], references: [id])
+
+  reportName String
+  reportLink String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("medicalReports")
+}
+
+model Admin {
+  id            String   @id @unique @default(uuid())
+  email         String   @unique
+  name          String
+  profilePhoto  String?
+  contactNumber String?
+  isDeleted     Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  user User @relation(references: [email], fields: [email])
+
+  @@map("admins")
+}
+
+model Schedule {
+  id        String   @id @default(uuid())
+  startDate DateTime
+  endDate   DateTime
+
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  doctorSchedules DoctorSchedule[]
+  Appointment     Appointment?
+
+  @@map("schedule")
+}
+
+model DoctorSchedule {
+  doctorId String
+  doctor   Doctor @relation(fields: [doctorId], references: [id])
+
+  scheduleId String
+  schedule   Schedule @relation(fields: [scheduleId], references: [id])
+
+  isBooked Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  appointment   Appointment? @relation(fields: [appointmentId], references: [id])
+  appointmentId String?
+
+  @@id([doctorId, scheduleId])
+  @@map("doctorSchedule")
+}
+
+model Appointment {
+  id        String  @id @default(uuid())
+  patientId String
+  patient   Patient @relation(fields: [patientId], references: [id])
+
+  doctorId String
+  doctor   Doctor @relation(fields: [doctorId], references: [id])
+
+  scheduleId String   @unique
+  schedule   Schedule @relation(fields: [scheduleId], references: [id])
+
+  videoCallingId String
+  status         AppointmentStatus @default(SCHEDULED)
+  paymentStatus  PaymentStatus     @default(UNPAID)
+  notes          String?
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+  payment        Payment?
+  prescription   Prescription?
+  review         Review?
+  DoctorSchedule DoctorSchedule[]
+
+  @@map("appointments")
+}
+
+model Payment {
+  id                 String        @id @default(uuid())
+  appointmentId      String        @unique
+  appointment        Appointment   @relation(fields: [appointmentId], references: [id])
+  amount             Float         @default(0.00)
+  transactionId      String        @unique
+  status             PaymentStatus @default(UNPAID)
+  paymentGatewayData Json?
+
+  @@map("payments")
+}
+
+model Prescription {
+  id       String @id @default(uuid())
+  doctorId String
+  doctor   Doctor @relation(fields: [doctorId], references: [id])
+
+  patientId String
+  patient   Patient @relation(fields: [patientId], references: [id])
+
+  appointmentId String      @unique
+  appointment   Appointment @relation(fields: [appointmentId], references: [id])
+
+  followUpDate DateTime?
+  instructions String
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@map("prescriptions")
+}
+
+model Review {
+  id       String @id @default(uuid())
+  doctorId String
+  doctor   Doctor @relation(fields: [doctorId], references: [id])
+
+  patientId String
+  patient   Patient @relation(fields: [patientId], references: [id])
+
+  appointmentId String      @unique
+  appointment   Appointment @relation(fields: [appointmentId], references: [id])
+
+  rating    Float
+  comment   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("reviews")
+}
+
+enum UserRole {
+  ADMIN
+  DOCTOR
+  PATIENT
+  SUPER_ADMIN
+}
+
+enum UserStatus {
+  BLOCKED
+  ACTIVE
+  PENDING
+  DELETED
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+enum MaritalStatus {
+  MARRIED
+  UNMARRIED
+}
+
+enum BloodGroup {
+  A_POSITIVE
+  A_NEGATIVE
+  B_POSITIVE
+  B_NEGATIVE
+  O_POSITIVE
+  O_NEGATIVE
+  AB_POSITIVE
+  AB_NEGATIVE
+}
+
+enum AppointmentStatus {
+  SCHEDULED
+  INPROGRESS
+  COMPLETED
+  CANCELED
+}
+
+enum PaymentStatus {
+  UNPAID
+  PAID
+}
