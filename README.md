@@ -43,3 +43,9 @@ create `.env`
 - 8. Retrive User info from `Browser Local Storage `
 - 9. Implement Logout Functionality
 - 10. Implement lazy loading to Navbar component
+
+
+Project:
+
+![log](./log.png) 
+![log](./reg.png)
