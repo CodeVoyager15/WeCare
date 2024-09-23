@@ -13,25 +13,29 @@ import assets from "@/assets";
 import Link from "next/link";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
-
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { userLogin } from "@/services/actions/userLogin";
 import { storeUserInfo } from "@/services/auth.services";
 import CustomForm from "@/components/Forms/CustomForm";
-
+import CustomInput from "@/components/Forms/CustomInput";
+import { useState } from "react";
 
 const LoginPage = () => {
   const router = useRouter();
 
+  const [defaultValues, setDefaultValues] = useState({
+    email: "patient111@gmail.com",
+    password: "123456",
+  });
 
-  const handleLogin = async (values:FieldValues) => {
+  const handleLogin = async (values: FieldValues) => {
     console.log(values);
     try {
       const res = await userLogin(values);
-      console.log(res)
+      console.log(res);
       if (res?.data?.accessToken) {
-        toast.success(res?.message,{richColors:true});
+        toast.success(res?.message, { richColors: true });
         storeUserInfo({ accessToken: res?.data?.accessToken });
         router.push("/");
       }
@@ -75,27 +79,26 @@ const LoginPage = () => {
             </Box>
           </Stack>
           {/* -------- ------------------- Form Handleing Part --------------  ------------------- */}
-          <Box>
-            <CustomForm onSubmit={handleLogin}>
+          <Box >
+            <CustomForm onSubmit={handleLogin} defaultValues={defaultValues}>
               <Grid container spacing={2} my={1}>
                 <Grid item md={6}>
-                  <TextField
-                    label="Email"
+                  <CustomInput
+                    name="email"
                     type="email"
-                    variant="outlined"
+                    label="Email"
                     size="small"
                     fullWidth={true}
-                    {...register("email")}
+                    required={true}
                   />
                 </Grid>
                 <Grid item md={6}>
-                  <TextField
+                  <CustomInput
+                    name="password"
                     label="Password"
-                    type="password"
-                    variant="outlined"
+                    type="text"
                     size="small"
                     fullWidth={true}
-                    {...register("password")}
                   />
                 </Grid>
               </Grid>
@@ -115,7 +118,9 @@ const LoginPage = () => {
               </Button>
               <Typography component="p" fontWeight={300}>
                 Don&apos;t have an account?{" "}
-                <Link className="text-blue-500 font-bold" href="/register">Create an account</Link>
+                <Link className="text-blue-500 font-bold" href="/register">
+                  Create an account
+                </Link>
               </Typography>
             </CustomForm>
           </Box>

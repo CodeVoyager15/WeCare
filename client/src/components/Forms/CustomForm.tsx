@@ -6,19 +6,23 @@ import {
   useForm,
 } from "react-hook-form";
 
+
 type IFormProps = {
   children: React.ReactNode;
-  onSubmit:SubmitHandler<FieldValues>
+  onSubmit:SubmitHandler<FieldValues>;
+  defaultValues?:Record<string, any>;
 };
 
-const CustomForm = ({ children,onSubmit }: IFormProps) => {
-  const methods = useForm();
-  const { handleSubmit } = methods;
+const CustomForm = ({ children,onSubmit,defaultValues }: IFormProps) => {
+  const methods = useForm({defaultValues});
+  const { handleSubmit,reset } = methods;
+
+
 
   //handler function
   const submit: SubmitHandler<FieldValues> = (data) => {
-    // console.log(data);
     onSubmit(data)
+    reset()
   }
 
   return (
