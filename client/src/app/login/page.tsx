@@ -11,30 +11,21 @@ import {
 import Image from "next/image";
 import assets from "@/assets";
 import Link from "next/link";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
 
 import { toast } from "sonner";
-import { Router } from "next/router";
 import { useRouter } from "next/navigation";
 import { userLogin } from "@/services/actions/userLogin";
 import { storeUserInfo } from "@/services/auth.services";
+import CustomForm from "@/components/Forms/CustomForm";
 
-export type TFormValues = {
-  email: string;
-  password: string;
-};
 
 const LoginPage = () => {
   const router = useRouter();
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<TFormValues>();
 
-  const onSubmit: SubmitHandler<TFormValues> = async (values) => {
+
+  const handleLogin = async (values:FieldValues) => {
     console.log(values);
     try {
       const res = await userLogin(values);
@@ -83,8 +74,9 @@ const LoginPage = () => {
               </Typography>
             </Box>
           </Stack>
+          {/* -------- ------------------- Form Handleing Part --------------  ------------------- */}
           <Box>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <CustomForm onSubmit={handleLogin}>
               <Grid container spacing={2} my={1}>
                 <Grid item md={6}>
                   <TextField
@@ -125,7 +117,7 @@ const LoginPage = () => {
                 Don&apos;t have an account?{" "}
                 <Link className="text-blue-500 font-bold" href="/register">Create an account</Link>
               </Typography>
-            </form>
+            </CustomForm>
           </Box>
         </Box>
       </Stack>
