@@ -34,6 +34,7 @@ create `.env`
     - `npm install zod`
     - `npm install @hookform/resolvers zod`
 - 5. Setting Default Value and Custom Error Messages
+- 6. Setting Default Value Validation for Patient Registration
 
 -
 **45:part-1 [Login+ Logout + Register Functionable using server action]**

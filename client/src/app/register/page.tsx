@@ -6,6 +6,8 @@ import { registerPatient } from "@/services/actions/registerPatient";
 import { userLogin } from "@/services/actions/userLogin";
 import { storeUserInfo } from "@/services/auth.services";
 import { modifyPayload } from "@/utils/modifyPayload";
+import { patientRegisterValidationSchema, } from "@/zodValidation/registerValidationSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Box,
   Button,
@@ -20,6 +22,16 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
 import { toast } from "sonner";
+
+export const defaultValues={
+  password: "123456",
+  "patient": {
+    email:"",
+    password:"",
+    contactNumber:"0111111111",
+    address:"Dhaka, BD"
+  }
+}
 
 // {
 //   "password": "123456",
@@ -98,7 +110,7 @@ const RegisterPage = () => {
           </Stack>
 
           <Box>
-            <CustomForm onSubmit={onSubmit}>
+            <CustomForm defaultValues={defaultValues} onSubmit={onSubmit} resolver={zodResolver(patientRegisterValidationSchema)}>
               <Grid container spacing={2} my={1}>
                 <Grid item md={12}>
                   <CustomInput
@@ -107,7 +119,7 @@ const RegisterPage = () => {
                     size="small"
                     type="name"
                     fullWidth={true}
-                    required={true}
+
                   />
                 </Grid>
                 <Grid item md={6}>
@@ -118,7 +130,7 @@ const RegisterPage = () => {
                     fullWidth={true}
                     name="patient.email"
                     placeholder="unique"
-                    required={true}
+
                   />
                 </Grid>
                 <Grid item md={6}>
@@ -127,7 +139,7 @@ const RegisterPage = () => {
                     type="password"
                     size="small"
                     fullWidth={true}
-                   name="password"
+                    name="password"
                     placeholder="123456"
                   />
                 </Grid>
