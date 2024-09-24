@@ -31,7 +31,7 @@ const CustomInput = ({
     <Controller
       control={control}
       name={name}
-      render={({ field }) => (
+      render={({ field,fieldState:{error} }) => (
         <TextField
           {...field}
           sx={{...sx}}
@@ -43,6 +43,8 @@ const CustomInput = ({
           placeholder={placeholder}
           id={name}
           required={required}
+          error={!!error?.message}
+          helperText={error?.message}
         />
       )}
     />

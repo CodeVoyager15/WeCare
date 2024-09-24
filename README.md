@@ -30,6 +30,10 @@ create `.env`
 - 1. [Make Resualbe Form](https://react-hook-form.com/docs/formprovider)
 - 2. [Make Resualbe Input and Make Login User Componet](https://react-hook-form.com/docs/usecontroller/controller) 
 - 3. Make Registration
+- 4. Add Validation using `zod` 
+    - `npm install zod`
+    - `npm install @hookform/resolvers zod`
+- 5. Setting Default Value and Custom Error Messages
 
 -
 **45:part-1 [Login+ Logout + Register Functionable using server action]**

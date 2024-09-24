@@ -20,13 +20,24 @@ import { storeUserInfo } from "@/services/auth.services";
 import CustomForm from "@/components/Forms/CustomForm";
 import CustomInput from "@/components/Forms/CustomInput";
 import { useState } from "react";
+// import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { loginValidationSchema } from "@/zodValidation/loginValidationSchema";
+
+
+// export const  loginValidationSchema=z.object({
+//   email:z.string().email("Please enter your email address!"),
+//   password:z.string().min(6,"Must be at least 6 characters")
+// })
 
 const LoginPage = () => {
   const router = useRouter();
 
   const [defaultValues, setDefaultValues] = useState({
     email: "patient111@gmail.com",
-    password: "123456",
+    password: "",
+    // email: "patient111@gmail.com",
+    // password: "123456",
   });
 
   const handleLogin = async (values: FieldValues) => {
@@ -80,7 +91,9 @@ const LoginPage = () => {
           </Stack>
           {/* -------- ------------------- Form Handleing Part --------------  ------------------- */}
           <Box >
-            <CustomForm onSubmit={handleLogin} defaultValues={defaultValues}>
+            <CustomForm onSubmit={handleLogin} defaultValues={defaultValues}
+            resolver={zodResolver(loginValidationSchema)}
+            >
               <Grid container spacing={2} my={1}>
                 <Grid item md={6}>
                   <CustomInput
@@ -89,7 +102,8 @@ const LoginPage = () => {
                     label="Email"
                     size="small"
                     fullWidth={true}
-                    required={true}
+
+                    // required={true} if present customized validation not work
                   />
                 </Grid>
                 <Grid item md={6}>
@@ -99,6 +113,7 @@ const LoginPage = () => {
                     type="text"
                     size="small"
                     fullWidth={true}
+                    placeholder="123456"
                   />
                 </Grid>
               </Grid>
