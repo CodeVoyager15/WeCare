@@ -23,20 +23,15 @@ import { useState } from "react";
 // import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginValidationSchema } from "@/zodValidation/loginValidationSchema";
-
-
-// export const  loginValidationSchema=z.object({
-//   email:z.string().email("Please enter your email address!"),
-//   password:z.string().min(6,"Must be at least 6 characters")
-// })
+import { error } from "console";
 
 const LoginPage = () => {
   const router = useRouter();
-
+  const [error, setError] = useState("");
   const [defaultValues, setDefaultValues] = useState({
     email: "patient111@gmail.com",
     password: "",
-    // email: "patient111@gmail.com",
+    // email: "patient112@gmail.com",
     // password: "123456",
   });
 
@@ -49,6 +44,8 @@ const LoginPage = () => {
         toast.success(res?.message, { richColors: true });
         storeUserInfo({ accessToken: res?.data?.accessToken });
         router.push("/");
+      } else {
+        setError(res?.message);
       }
     } catch (err: any) {
       console.error(err.message);
@@ -88,11 +85,30 @@ const LoginPage = () => {
                 Login Thakurgaon HealthCare
               </Typography>
             </Box>
+
+            <Box>
+              {error && (
+                <Typography
+                  component="p"
+                  sx={{
+                    backgroundColor: "red",
+                    color: "white",
+                    padding: "1px 10px",
+                    fontWeight: "bolder",
+                    width: "100%",
+                  }}
+                >
+                  {error}
+                </Typography>
+              )}
+            </Box>
           </Stack>
           {/* -------- ------------------- Form Handleing Part --------------  ------------------- */}
-          <Box >
-            <CustomForm onSubmit={handleLogin} defaultValues={defaultValues}
-            resolver={zodResolver(loginValidationSchema)}
+          <Box>
+            <CustomForm
+              onSubmit={handleLogin}
+              defaultValues={defaultValues}
+              resolver={zodResolver(loginValidationSchema)}
             >
               <Grid container spacing={2} my={1}>
                 <Grid item md={6}>
