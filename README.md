@@ -47,5 +47,5 @@ create `.env`
 
 Project:
 
-![log](./log.png) 
-![log](./reg.png)
+![log](./outputImage/log.png) 
+![log](./outputImage/reg.png)
