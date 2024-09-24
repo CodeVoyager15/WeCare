@@ -26,6 +26,9 @@ create `.env`
 - 9. Cloudinary Account creation and configure to .env`
 - 10. Create SSCL Commerce account and configure it to `
 
+
+--- 
+
 **46:part-4 [Reusable+rtk+axios+]**
 - 1. [Make Resualbe Form](https://react-hook-form.com/docs/formprovider)
 - 2. [Make Resualbe Input and Make Login User Componet](https://react-hook-form.com/docs/usecontroller/controller) 
@@ -38,6 +41,8 @@ create `.env`
 - 7. Display Error Messages in Login Form
 - 8. [Install redux-toolkit](https://redux-toolkit.js.org/tutorials/quick-start)
     - `npm install @reduxjs/toolkit react-redux`
+- 9. [Install axios](https://redux-toolkit.js.org/rtk-query/usage/customizing-queries#examples---basequery)
+    - `npm install axios`
 
 -
 **45:part-1 [Login+ Logout + Register Functionable using server action]**
