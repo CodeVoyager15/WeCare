@@ -19,7 +19,7 @@ create `.env`
 
 - `npx prisma migrate dev`
 
-**43:part-1 [Server Configure]**
+**part-1 [Server Configure]**
 - 6. Clone Server Install dependencies and configure `.env`
 - 7. Insatall `PostgreSQL` and connect to the `database`
 - 8. Generate Gmail app for and configure it in `.evn`
@@ -29,7 +29,11 @@ create `.env`
 
 --- 
 
-**46:part-4 [Reusable+rtk+axios+]**
+**🔲 part-4 [Reusable+rtk+axios+]**
+
+⏩  No rtk operation were performed. 
+⏩ just performed the login and register operation based on react hook form
+
 - 1. [Make Resualbe Form](https://react-hook-form.com/docs/formprovider)
 - 2. [Make Resualbe Input and Make Login User Componet](https://react-hook-form.com/docs/usecontroller/controller) 
 - 3. Make Registration
@@ -43,9 +47,10 @@ create `.env`
     - `npm install @reduxjs/toolkit react-redux`
 - 9. [Install axios](https://redux-toolkit.js.org/rtk-query/usage/customizing-queries#examples---basequery)
     - `npm install axios`
+- 10. Create Dashboard test layout
 
 -
-**45:part-1 [Login+ Logout + Register Functionable using server action]**
+**🔲 part-3 [Login+ Logout + Register Functionable using server action]**
 - 1. Create Patient Register Page
 - 2. Create User Login Page
 - 3. Get Input Field From Valuses Using React Hook Form
