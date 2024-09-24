@@ -36,6 +36,8 @@ create `.env`
 - 5. Setting Default Value and Custom Error Messages
 - 6. Setting Default Value Validation for Patient Registration
 - 7. Display Error Messages in Login Form
+- 8. [Install redux-toolkit](https://redux-toolkit.js.org/tutorials/quick-start)
+    - `npm install @reduxjs/toolkit react-redux`
 
 -
 **45:part-1 [Login+ Logout + Register Functionable using server action]**
