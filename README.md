@@ -49,6 +49,11 @@ create `.env`
     - `npm install axios`
 - 10. Create Dashboard test layout
 
+`Add axios base query`
+- [Default configuration :](https://axios-http.com/docs/config_defaults); axiosInstance.ts
+- [modifying req and res- works like middleware](https://axios-http.com/docs/interceptors) 
+- [we need this for modifying req and res of user.] 
+
 -
 **🔲 part-3 [Login+ Logout + Register Functionable using server action]**
 - 1. Create Patient Register Page

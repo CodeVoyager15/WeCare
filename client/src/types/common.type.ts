@@ -4,3 +4,13 @@ export type TMeta ={
     total:number;
     totalPage?:number;
 };
+
+export type TResponseSuccess={
+    data:any;
+    meta?:TMeta;
+}
+export type TGenericErrorResponse={
+    statusCode:number;
+    message:string;
+    errorMessages:string;
+}
