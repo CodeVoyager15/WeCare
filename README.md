@@ -69,6 +69,3 @@ create `.env`
 
 
 Project:
-
-![log](./outputImage/log.png) 
-![log](./outputImage/reg.png)
